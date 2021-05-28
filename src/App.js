@@ -3,18 +3,28 @@ import {getTransactions} from './App.service';
 import { useState, useEffect } from 'react';
 
 const App = () => {
-  const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(0);
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
+    const getData = (page, currentTransactions, totalCount) => {
+      getTransactions(page).then(data => {
+        // Maintain count
+        totalCount = data.totalCount;
+        // Merge current and new transactions
+        let newTransactions = [...currentTransactions, ...data.transactions];
+        // Updating state with new transactions
+        setTransactions(newTransactions);
+        // if transactions reached total count then stop fetching
+        if(newTransactions.length === totalCount) return;
+        // Else continue fetching till count is met
+        getData(data.page+1, newTransactions, totalCount);
+      }).catch(err => {
+        // Error logging
+        console.log(err);
+      });
+    };
     // Load data from page 1 on init
-    getTransactions(1).then(data => {
-      // Set page, count and transactions state
-      setPage(data.page);
-      setTotalCount(data.totalCount);
-      setTransactions(data.transactions);
-    });
+    getData(1, [], 0);
   }, []);
 
   /* Data format methods */
