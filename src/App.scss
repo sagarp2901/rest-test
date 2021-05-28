@@ -1,0 +1,60 @@
+.App {
+  height: 100vh;
+  background-color: #efede8;
+
+  .header {
+    background-color: #2b8b8c;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .transaction-container {
+    font-weight: 600;
+    width: 90%;
+    margin: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    .row-header {
+      background-color: white !important;
+    }
+    .transaction-row {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f7f6f4;
+      padding: 1rem;
+      border-bottom: 1px solid rgb(228, 224, 224);
+
+      .cell-1 {
+        width: 15%;
+        text-align: left;
+      }
+      .cell-2 {
+        width: 40%;
+        text-align: left;
+      }
+      .cell-3 {
+        width: 30%;
+        text-align: left;
+      }
+      .cell-4 {
+        width: 15%;
+        flex: 1;
+        text-align: right;
+      }
+    }
+  }
+
+  .font-green {
+    color: #35a5a8;
+  }
+
+  .font-black {
+    color: #555559;
+  }
+
+  .font-gray {
+    color: #c6c7c8;
+  }
+}
