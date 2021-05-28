@@ -4,23 +4,25 @@ import { useState, useEffect } from 'react';
 
 const App = () => {
   const [transactions, setTransactions] = useState([]);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const getData = (page, currentTransactions, totalCount) => {
       getTransactions(page).then(data => {
-        // Maintain count
+        // Maintain total count
         totalCount = data.totalCount;
         // Merge current and new transactions
         let newTransactions = [...currentTransactions, ...data.transactions];
-        // Updating state with new transactions
+        // Update state with new transactions
         setTransactions(newTransactions);
-        // if transactions reached total count then stop fetching
+        // If transactions reached total count then stop fetching
         if(newTransactions.length === totalCount) return;
         // Else continue fetching till count is met
         getData(data.page+1, newTransactions, totalCount);
       }).catch(err => {
         // Error logging
         console.log(err);
+        setErrorMsg('Something went wrong. Please try again later!')
       });
     };
     // Load data from page 1 on init
@@ -98,17 +100,19 @@ const App = () => {
   return (
     <div className="App">
       <div className="header">Bench Test</div>
-      <div className="transaction-container">
-        <div className="row-header transaction-row">
-          <div className="cell-1 font-green">Date</div>
-          <div className="cell-2 font-green">Company</div>
-          <div className="cell-3 font-green">Account</div>
-          <div className="cell-4 font-green">{renderSumAmount()}</div>
+      {errorMsg? <div className="error-msg">{errorMsg}</div> :
+        <div className="transaction-container">
+          <div className="row-header transaction-row">
+            <div className="cell-1 font-green">Date</div>
+            <div className="cell-2 font-green">Company</div>
+            <div className="cell-3 font-green">Account</div>
+            <div className="cell-4 font-green">{renderSumAmount()}</div>
+          </div>
+          {transactions && transactions.map((transaction, index) => (
+              renderTransaction(transaction, index)
+          ))}
         </div>
-        {transactions && transactions.map((transaction, index) => (
-            renderTransaction(transaction, index)
-        ))}
-      </div>
+      }
     </div>
   );
 }
